@@ -1,5 +1,18 @@
-<?php
-defined('FLATBOARD') or die('Flatboard Community.');
+<?php defined('FLATBOARD') or die('Flatboard Community.');
+/**
+ * editor
+ *
+ * @author 		Simon L.
+ * @copyright	(c) 2019
+ * @license		http://opensource.org/licenses/MIT
+ * @package		FlatBoard
+ * @version		1.0
+ * @update		2019-01-22
+ */	  
+            	
+/**
+ * On pré-installe les paramètres par défauts.
+**/
 function onepass_install() {
   $plugin = "onepass";
   if (flatDB::isValidEntry('plugin', $plugin)) {
@@ -8,7 +21,9 @@ function onepass_install() {
   $data[$plugin.'state'] = false;
   flatDB::saveEntry('plugin', $plugin, $data);
 }
-
+/**
+ *  Admin
+**/
 function onepass_config() {
   global $lang, $token;
   $plugin = 'onepass';
@@ -24,14 +39,17 @@ function onepass_config() {
       HTMLForm::checkBox('state', $data[$plugin.'state']).
       HTMLForm::simple_submit());
      }
-   }
-   return $out;
+  }
+  return $out;
 }
-
+/**
+ *  JavaScript en pied de page
+**/
 function onepass_footerJS(){
+  global $out;
   $plugin = 'onepass';
   $data = flatDB::readEntry('plugin', $plugin);
-  if ($data[$plugin.'state']&&basename($_SERVER["REQUEST_URI"], ".php")=="auth"){
-    return "<script src='".HTML_PLUGIN_DIR . $plugin . DS . "onepass.js"."'></script>";
+  if ($data[$plugin.'state'] && $out['self']=='auth'){
+    return '	<script src="' .HTML_PLUGIN_DIR . $plugin . DS . 'onepass.js"></script>'.PHP_EOL;
   }
 }
